@@ -1,0 +1,33 @@
+{
+  "name": "you-get-https",
+  "version": "1.0.0",
+  "description": "A trusted-cert HTTPS frontliner for your local development servers",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "you-get-https": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deliciousinsights/you-get-https.git"
+  },
+  "keywords": [
+    "https",
+    "tls",
+    "ssl",
+    "development",
+    "local",
+    "terminator"
+  ],
+  "author": "Christophe Porteneuve <christophe@delicious-insights.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/deliciousinsights/you-get-https/issues"
+  },
+  "homepage": "https://github.com/deliciousinsights/you-get-https#readme",
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "xdg-basedir": "^4.0.0"
+  }
+}
