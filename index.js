@@ -7,13 +7,11 @@
  * @see https://github.com/deliciousinsights/you-get-https#readme
  */
 
-const { certificateFor } = require('devcert')
 const { readConfig } = require('./config')
 
 run()
 
 async function run() {
   const config = await readConfig()
-  const ssl = await certificateFor('assets.premiercadeau.test')
-  console.log(ssl)
+  console.log(require('util').inspect(config, { depth: 4 }))
 }

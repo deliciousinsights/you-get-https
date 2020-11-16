@@ -55,6 +55,8 @@ You should list more specific domains first for now, so they don't get swallowed
 
 ## 3. Running You-Get-HTTPS
 
+### Frontline listening port
+
 Unless you're going for a custom port above 1024, **the default HTTPS port (443) requires administrator privileges** for binding.
 
 On **Linux** (including [WSL](https://docs.microsoft.com/en-us/windows/wsl/about)) or **OSX**, this means you need to `sudo` it.
@@ -72,6 +74,10 @@ Should that be an issue, you can configure a different frontline listening port,
   }
 }
 ```
+
+### “devcert password”
+
+On Windows, `devcert` ciphers its local root CA credentials for extra security.  Every time you run it with no-certificate-yet domains, it will prompt you for said password.  That password is first set on the very first run, when the local root CA is installed, so be sure to remember it!
 
 ## License
 

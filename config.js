@@ -1,4 +1,5 @@
 const { access, readFile } = require('fs/promises')
+const { certificateFor } = require('devcert')
 const { F_OK, R_OK } = require('fs').constants
 const { join: joinPaths } = require('path')
 const JSON5 = require('json5')
@@ -40,7 +41,6 @@ async function readConfig() {
 
   const path = joinPaths(xdgBaseDirs.config, await getConfigFileName())
   const configFileReadable = await canFileBeRead(path)
-  console.log(path, configFileReadable)
 
   if (!configFileReadable) {
     return result
@@ -56,13 +56,18 @@ async function readConfig() {
 
 
     for (const [domain, port] of Object.entries(settings.mappings)) {
-      console.log(domain, port)
       if (isValidDomain(domain) && isValidPort(port)) {
-        result.mappings.set(domain, Math.trunc(Number(port)))
+        result.mappings.set(domain, { port: Math.trunc(Number(port)) })
       }
     }
+
+    const domains = Array.from(result.mappings.keys())
+    const sslConfigs = await Promise.all(domains.map(certificateFor))
+    for (const sslConfig of sslConfigs) {
+      result.mappings.get(domains.shift()).ssl = sslConfig
+    }
   } catch (e) {
-    console.error('Error reading TOML configuration file:', e)
+    console.error('Error reading JSON5 configuration file:', e)
   }
   return result
 }
