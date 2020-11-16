@@ -51,7 +51,7 @@ You specify your domain mappings through the `mappings` setting.  Keys are domai
 
 ### A word about mapping precedence
 
-You should list more specific domains first for now, so they don't get swallowed up by a more-generic domain mapping.  I'll eventually guarantee this regardless of config ordering, but for now, please ensure this yourself.
+Subdomains are automatically mapped to their suffixes, and the more specific (longer) domain suffixes always win the mapping, regardless of their order in the configuration.
 
 ## 3. Running You-Get-HTTPS
 
