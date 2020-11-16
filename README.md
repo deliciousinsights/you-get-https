@@ -25,23 +25,28 @@ As this is a thin wrapper over the amazing [devcert](https://github.com/davewasm
 npm install --global you-get-https
 ```
 
+The first time you'll run the tool, the underlying `devcert` will setup and install the trusted local CA.  This requires the availability, in your PATH, of **OpenSSL**.
+
+If you are on **Windows** and do not have OpenSSL installed, [use this link](https://slproweb.com/products/Win32OpenSSL.html) to download the latest build and add its installed `bin` directory to your `PATH`.
+
 ## 2. Configuration
 
-The configuration lives in a `you-get-https.toml` file in your `XDG_CONFIG_HOME` (or by default, `.config` directory in your user profile's home directory).
+The configuration lives in a `you-get-https.json` file in your `XDG_CONFIG_HOME` (or by default, `.config` directory in your user profile's home directory). The file is actually read as [JSON5](https://json5.org/) so you can, for instance, sprinkle comments in there, forego unnecessary key quoting and use trailing commas.
 
-If you don't know about [TOML](https://github.com/toml-lang/toml/tree/v0.5.0#readme), read about it now. It's amazing for friendly, human-readable yet highly-expressive configuration files.  You can get a [VS Code extension](https://marketplace.visualstudio.com/items?itemName=tamasfe.even-better-toml) for even easier editing.
+You specify your domain mappings through the `mappings` setting.  Keys are domain names and values are port numbers. Here's an example:
 
-You specify your domain mappings through the `mappings` table.  Keys are domain names and values are port numbers.  Here's an example:
+```js
+{
+  mappings: {
+    // Masterclass project
+    "assets.masterclass.test": 3001,
+    "masterclass.test": 3000,
 
-```toml
-[mappings]
-# Masterclass project
-assets.masterclass.test = 3001
-masterclass.test = 3000
-
-# PremierCadeau project
-assets.premiercadeau.test = 5001
-premiercadeau.test = 5000
+    // PremierCadeau project
+    "assets.premiercadeau.test": 5001,
+    "premiercadeau.test": 5000,
+  }
+}
 ```
 
 ### A word about mapping precedence
@@ -58,11 +63,14 @@ On **Windows**, if you're running it from a command line (Command Prompt, Powers
 
 Should that be an issue, you can configure a different frontline listening port, but you'll need to be explicit baout it in your URLs then:
 
-```toml
-[frontline]
-# Results in e.g. https://premiercadeau.test:1337/
-# Does not require admin privileges to bind.
-listen = 1337
+```js
+{
+  frontline: {
+    // Results in e.g. https://premiercadeau.test:1337/
+    // Does not require admin privileges to bind.
+    listen: 1337
+  }
+}
 ```
 
 ## License
