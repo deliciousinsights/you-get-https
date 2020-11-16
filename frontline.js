@@ -1,3 +1,4 @@
+const { createProxyServer } = require('http-proxy')
 const { createServer } = require('https')
 const { findPortForMappedHost } = require('./config')
 
@@ -30,6 +31,8 @@ function setupFrontline({ listeningPort, mappings }) {
     })
   }
 
+  const proxy = createProxyServer({ xfwd: true, ws: true })
+
   // Launch error handler.  Special-cases "port in use" situations for more
   // actionable reporting.
   function handleListenError(err) {
@@ -50,9 +53,15 @@ function setupFrontline({ listeningPort, mappings }) {
     }
 
     // TODO: log queries if config option 'verbose' is set
-    // FIXME actually proxy the request there
-    res.setHeader('Content-Type', 'text/plain; charset=utf-8')
-    res.end(new Date().toLocaleString() + ' / ' + port)
+    proxy.web(req, res, { target: `http://localhost:${port}` }, (err) => {
+      if (err.code === 'ECONNREFUSED') {
+        const msg = `Could not connect to proxied port ${port}`
+        res.writeHead(503, msg)
+        res.end(msg)
+      } else {
+        res.writeHead(500, err.message)
+      }
+    })
   }
 
   // Launch success handler.  Reports on the listening port and active mappings.

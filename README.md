@@ -31,7 +31,7 @@ If you are on **Windows** and do not have OpenSSL installed, [use this link](htt
 
 ## 2. Configuration
 
-The configuration lives in a `you-get-https.json` file in your `XDG_CONFIG_HOME` (or by default, `.config` directory in your user profile's home directory). The file is actually read as [JSON5](https://json5.org/) so you can, for instance, sprinkle comments in there, forego unnecessary key quoting and use trailing commas.
+The configuration lives in a `you-get-https.json5` file in your `XDG_CONFIG_HOME` (or by default, `.config` directory in your user profile's home directory). The file is [JSON5](https://json5.org/) so you can, for instance, sprinkle comments in there, forego unnecessary key quoting and use trailing commas.
 
 You specify your domain mappings through the `mappings` setting.  Keys are domain names and values are port numbers. Here's an example:
 
