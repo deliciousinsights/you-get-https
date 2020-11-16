@@ -1,5 +1,5 @@
 /**
- * You-Get-HTTP! -- A configurable HTTPS frontline for local development servers
+ * You-Get-HTTPS! -- A configurable HTTPS frontline for local development servers
  * listening as HTTP, using a thin wrapper on top of the devcert tool.
  *
  * © 2020 Christophe Porteneuve & Delicious Insights
@@ -8,10 +8,11 @@
  */
 
 const { readConfig } = require('./config')
+const { setupFrontline } = require('./frontline')
 
 run()
 
 async function run() {
   const config = await readConfig()
-  console.log(require('util').inspect(config, { depth: 4 }))
+  setupFrontline(config).start()
 }
