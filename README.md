@@ -17,7 +17,7 @@ As this is a thin wrapper over the amazing [devcert](https://github.com/davewasm
 ## Why not just use devcert / mkcert directly?
 
 - [mkcert](https://github.com/FiloSottile/mkcert#readme) is great at installing a trusted local CA and issuing certs for domain lists, but it stops there: **you don't get an HTTPS endpoint with that** cert, you need to either configure each of your local servers to go HTTPS on its own, or write your own frontline.
-- [devcert](https://github.com/davewasmer/devcert#readme) is absolutely awesome — which is why this tools sits on top of it — but **you still need to write a frontline using its API** to get a working HTTPS endpoint.  Providing that frontline is precisely what You-Get-HTTPS does, to save you the hassle.
+- [devcert](https://github.com/davewasmer/devcert#readme) is absolutely awesome — which is why this tools sits on top of it — but **you still need to write a frontline using its API** to get a working HTTPS endpoint, typically over your existing Node server code, or with a bit more work, as a proxy over listening ports for dev servers you already have.  Providing that frontline is precisely what You-Get-HTTPS does, to save you the hassle.
 
 ## 1. Installation
 
