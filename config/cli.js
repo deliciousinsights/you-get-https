@@ -4,6 +4,7 @@ const {
   configuredDomains,
   hasCertificateFor,
   removeDomain,
+  uninstall,
 } = require('devcert')
 
 const { APP_NAME, readConfig } = require('.')
@@ -26,6 +27,7 @@ function getCLIOptions() {
       {},
       forgetDomain
     )
+    .command('uninstall', `Uninstall ${APP_NAME} and devcert`, {}, uninstallAll)
     .version()
     .alias('V', 'version')
     .option('verbose', { alias: 'v', describe: 'Logs proxied requests' })
@@ -39,6 +41,7 @@ function forgetDomain({ domain }) {
     removeDomain(domain)
     console.info(`${APP_NAME}: domain ${domain} is not configured anymore.`)
   }
+  process.exit(0)
 }
 
 function listDomains() {
@@ -55,6 +58,11 @@ async function processCLI() {
   const cli = getCLIOptions()
   const config = await readConfig()
   setupFrontline(config).start()
+}
+
+function uninstallAll() {
+  uninstall()
+  process.exit(0)
 }
 
 exports.processCLI = processCLI

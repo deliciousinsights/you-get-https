@@ -29,6 +29,10 @@ The first time you'll run the tool, the underlying `devcert` will setup and inst
 
 If you are on **Windows** and do not have OpenSSL installed, [use this link](https://slproweb.com/products/Win32OpenSSL.html) to download the latest build and add its installed `bin` directory to your `PATH`.
 
+Installing a trusted CA on your system often comes with a security prompt. For instance, on a French Windows 10 this may look like this:
+
+![A French Windows 10 security prompt when installing a systemwide trusted CA](./assets/screenshot-ca-installation.png)
+
 ## 2. Configuration
 
 The configuration lives in a `you-get-https.json5` file in your `XDG_CONFIG_HOME` (or by default, `.config` directory in your user profile's home directory). The file is [JSON5](https://json5.org/) so you can, for instance, sprinkle comments in there, forego unnecessary key quoting and use trailing commas.
@@ -57,11 +61,11 @@ Subdomains are automatically mapped to their suffixes, and the more specific (lo
 
 ### Frontline listening port
 
-Unless you're going for a custom port above 1024, **the default HTTPS port (443) requires administrator privileges** for binding.
+Unless you're going for a custom port above 1024, **the default HTTPS port (443) may require administrator privileges** for binding.
 
 On **Linux** (including [WSL](https://docs.microsoft.com/en-us/windows/wsl/about)) or **OSX**, this means you need to `sudo` it.
 
-On **Windows**, if you're running it from a command line (Command Prompt, Powershell, etc.), you need to **start that command line as Administrator**.  If you're running it through a shortcut file or direct call, this needs to be configured as Administrator or invoked with that specific mode.
+On **Windows**, if you're running it from a command line (Command Prompt, Powershell, etc.) and hitting a port security issue that cannot be solved with a dynamic prompt confirmation, you need to **start that command line as Administrator**.  If you're running it through a shortcut file or direct call, this needs to be configured as Administrator or invoked with that specific mode.
 
 Should that be an issue, you can configure a different frontline listening port, but you'll need to be explicit baout it in your URLs then:
 
@@ -74,6 +78,10 @@ Should that be an issue, you can configure a different frontline listening port,
   }
 }
 ```
+
+Once launched, you'll get a successful report looking like this:
+
+![A successful launch report](./assets/screenshot-successful-launch.png)
 
 ### “devcert password”
 
