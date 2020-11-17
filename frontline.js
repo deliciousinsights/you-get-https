@@ -1,6 +1,6 @@
 const { createProxyServer } = require('http-proxy')
 const { createServer } = require('https')
-const { findPortForMappedHost } = require('./config')
+const { APP_NAME, findPortForMappedHost } = require('./config')
 
 // Exported API: sets up an HTTPS server on the listening port and registers SSL
 // configs and proxying for all known mappings.  This does not start listening,
@@ -66,7 +66,9 @@ function setupFrontline({ listeningPort, mappings }) {
 
   // Launch success handler.  Reports on the listening port and active mappings.
   function reportSuccessfulStart() {
-    console.log(`You-Get-HTTPS! frontline listening on port ${frontline.address().port}`)
+    console.log(
+      `${APP_NAME} frontline listening on port ${frontline.address().port}`
+    )
     console.log('Active port mappings:')
     console.table(Array.from(mappings).map(([domain, { port }]) => ({ domain, port })))
     console.log('Hit Ctrl+C to stop')

@@ -11,6 +11,8 @@ const xdgBaseDirs = require('xdg-basedir')
 
 const { cipher, decipher } = require('./secrets')
 
+const APP_NAME = 'You-Get-HTTPS!'
+
 // Helper: whether our process can read/write the file at `path`.
 
 async function canFileBe(path, mode = 'read') {
@@ -88,7 +90,7 @@ async function persistConfig(settings) {
 
   let text = JSON5.stringify(settings, null, 2)
   const stamp = new Date().toISOString()
-  text = `// Overwritten by You-Get-HTTPS! on ${stamp}\n${text}`
+  text = `// Overwritten by ${APP_NAME} on ${stamp}\n${text}`
   await writeFile(path, text, { encoding: 'utf-8' })
 }
 
@@ -168,5 +170,6 @@ async function readConfig() {
   return result
 }
 
+exports.APP_NAME = APP_NAME
 exports.findPortForMappedHost = findPortForMappedHost
 exports.readConfig = readConfig

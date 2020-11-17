@@ -7,12 +7,6 @@
  * @see https://github.com/deliciousinsights/you-get-https#readme
  */
 
-const { readConfig } = require('./config')
-const { setupFrontline } = require('./frontline')
+const { processCLI } = require('./config/cli')
 
-run()
-
-async function run() {
-  const config = await readConfig()
-  setupFrontline(config).start()
-}
+processCLI()
