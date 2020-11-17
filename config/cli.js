@@ -57,7 +57,7 @@ function listDomains() {
 async function processCLI() {
   const cli = getCLIOptions()
   const config = await readConfig()
-  setupFrontline(config).start()
+  setupFrontline({ ...config, verbose: cli.verbose }).start()
 }
 
 function uninstallAll() {

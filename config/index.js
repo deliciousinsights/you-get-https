@@ -159,7 +159,7 @@ async function readConfig() {
     for (let [domain, port] of Object.entries(settings.mappings)) {
       domain = normalizeDomain(domain)
       if (isValidDomain(domain) && isValidPort(port)) {
-        result.mappings.set(domain.toLowerCase(), { port: convertPort(port) })
+        result.mappings.set(domain, { port: convertPort(port) })
       }
     }
 

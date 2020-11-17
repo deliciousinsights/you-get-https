@@ -1,12 +1,25 @@
+const chalk = require('chalk')
 const { createProxyServer } = require('http-proxy')
 const { createServer } = require('https')
 const { APP_NAME, findPortForMappedHost } = require('./config')
+
+const LOG_STAMP_FORMATTER = new Intl.DateTimeFormat([], { timeStyle: 'medium' })
+
+function logRequest({ req, listeningPort, port }) {
+  const { hostname, pathname } = new URL(req.url, `https://${req.headers.host}`)
+  const frontlinePort = listeningPort === 443 ? '' : `:${listeningPort}`
+  const stamp = LOG_STAMP_FORMATTER.format(new Date())
+
+  console.debug(
+    chalk`{dim [${stamp}] ${req.method} https://}${hostname}{dim ${pathname}${frontlinePort} => port} {bold ${port}}`
+  )
+}
 
 // Exported API: sets up an HTTPS server on the listening port and registers SSL
 // configs and proxying for all known mappings.  This does not start listening,
 // but the resulting object has a `start()` method to do just that.  Errors and
 // successful launch both are automatically reported on the console.
-function setupFrontline({ listeningPort, mappings }) {
+function setupFrontline({ listeningPort, mappings, verbose }) {
   const frontline = createServer(proxyRequest)
 
   // Here we register SSL configs (cert + key) for every mapped domain, so we
@@ -37,7 +50,9 @@ function setupFrontline({ listeningPort, mappings }) {
   // actionable reporting.
   function handleListenError(err) {
     if (err.code === 'EADDRINUSE') {
-      console.error(`It looks like listening port ${listeningPort} is in use already.  Check your existing services?`)
+      console.error(
+        `It looks like listening port ${listeningPort} is in use already.  Check your existing services?`
+      )
     } else {
       console.error(err)
     }
@@ -52,14 +67,15 @@ function setupFrontline({ listeningPort, mappings }) {
       return
     }
 
-    // TODO: log queries if config option 'verbose' is set
+    if (verbose) {
+      logRequest({ req, listeningPort, port })
+    }
     proxy.web(req, res, { target: `http://localhost:${port}` }, (err) => {
       if (err.code === 'ECONNREFUSED') {
         const msg = `Could not connect to proxied port ${port}`
-        res.writeHead(503, msg)
-        res.end(msg)
+        res.writeHead(503, msg).end(msg)
       } else {
-        res.writeHead(500, err.message)
+        res.writeHead(500, err.message).end(err.message)
       }
     })
   }
@@ -70,7 +86,9 @@ function setupFrontline({ listeningPort, mappings }) {
       `${APP_NAME} frontline listening on port ${frontline.address().port}`
     )
     console.log('Active port mappings:')
-    console.table(Array.from(mappings).map(([domain, { port }]) => ({ domain, port })))
+    console.table(
+      Array.from(mappings).map(([domain, { port }]) => ({ domain, port }))
+    )
     console.log('Hit Ctrl+C to stop')
   }
 
