@@ -1,6 +1,6 @@
 {
   "name": "you-get-https",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A trusted-cert HTTPS frontliner for your local development servers",
   "scripts": {
     "start": "node index.js"
