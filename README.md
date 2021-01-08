@@ -67,7 +67,7 @@ On **Linux** (including [WSL](https://docs.microsoft.com/en-us/windows/wsl/about
 
 On **Windows**, if you're running it from a command line (Command Prompt, Powershell, etc.) and hitting a port security issue that cannot be solved with a dynamic prompt confirmation, you need to **start that command line as Administrator**.  If you're running it through a shortcut file or direct call, this needs to be configured as Administrator or invoked with that specific mode.
 
-Should that be an issue, you can configure a different frontline listening port, but you'll need to be explicit baout it in your URLs then:
+Should that be an issue, you can configure a different frontline listening port, but you'll need to be explicit about it in your URLs then:
 
 ```js
 {
@@ -82,6 +82,21 @@ Should that be an issue, you can configure a different frontline listening port,
 Once launched, you'll get a successful report looking like this:
 
 ![A successful launch report](./assets/screenshot-successful-launch.png)
+
+### Running it in the background
+
+An easy way to "daemonize" You-Get-HTTPS in a cross-platform way is to start it with the awesome [PM2](https://pm2.keymetrics.io/) process manager.  However, PM2 needs to run **you module's entrypoint**, which means you'll be better off installing You-Get-HTTPS "locally" and starting pm2 from its directory (instead of hunting around npm's global module installation paths).
+
+If you're still game, here's something that would work
+
+```
+npm install you-get-https
+npm install --global pm2
+cd you-get-https
+pm2 start index.js
+```
+
+Then from the directory you grabbed 
 
 ### “devcert password”
 
